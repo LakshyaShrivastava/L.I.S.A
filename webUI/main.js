@@ -36,4 +36,11 @@ $(document).ready(function () {
         }
     })
 
+    // mic button click event
+    $("#MicBtn").click(function () { 
+        eel.playStartsSound();
+        $("#Oval").attr("hidden", true);
+        $("#LisaWave").attr("hidden", false);
+    });
+
 });
