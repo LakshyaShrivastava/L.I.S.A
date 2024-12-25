@@ -1,11 +1,13 @@
+# main app entrypoint
+
 import requests
 import json
 import os
 import eel
 
 
-from engine.speak import greet
-from engine.features import playStartsSound
+from engine.speak import *
+from engine.features import *   
 
 # API endpoint
 url = "http://localhost:11434/api/chat"
