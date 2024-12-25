@@ -1,5 +1,7 @@
 import requests
 import json
+import os
+import eel
 
 from speak import greet
 
@@ -7,6 +9,10 @@ from speak import greet
 url = "http://localhost:11434/api/chat"
 
 if __name__ == "__main__":
+    eel.init("webUI")
+    os.system('start msedge.exe --app="http://localhost:8000/index.html"')
+    eel.start('index.html', mode=None, host='localhost', block=True)
+
     greet()
     while True:
         question = str(input("Question: "))
