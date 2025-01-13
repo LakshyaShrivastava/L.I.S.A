@@ -41,7 +41,7 @@ $(document).ready(function () {
         eel.playStartsSound();
         $("#Oval").attr("hidden", true);
         $("#LisaWave").attr("hidden", false);
-        eel.take_commands()
+        eel.parse_all_commands()
     });
 
 });
