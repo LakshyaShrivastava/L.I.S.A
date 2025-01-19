@@ -1,5 +1,6 @@
 import pyttsx3
 import eel
+import time
 
 def greet():
     greeting = "Hi, I am Lisa. How may I help you?"
@@ -13,3 +14,4 @@ def speak(audio):
     eel.DisplayMessage(audio)
     engine.say(audio)
     engine.runAndWait()
+    

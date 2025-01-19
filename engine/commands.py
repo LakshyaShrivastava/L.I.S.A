@@ -1,9 +1,10 @@
 import speech_recognition as sr
 import eel
 import os
-import time
 import requests
 import json
+import pywhatkit as kit
+import re
 
 from engine.constants import ASSISTANT_NAME, API_ENDPOINT
 from engine.speak import speak
@@ -38,6 +39,8 @@ def parse_all_commands():
     print(query)
     if "open" in query:
         handle_open(query)
+    elif "on youtube" in query:
+        handle_youtube(query)
     else:
         query_llama(query)
 
@@ -69,3 +72,14 @@ def query_llama(query):
     speak(ai_reply)
     # print(ai_reply)
     eel.ShowBlob() 
+
+def handle_youtube(query):
+    query = extract_yt_query(query)
+    speak("Playing " + query + "on YouTube")
+    kit.playonyt(query)
+
+def extract_yt_query(query):
+    # regEX expression to capture video title
+    pattern = r'play\s+(.*?)\s+on\s+youtube'
+    match = re.search(pattern, query, re.IGNORECASE)
+    return match.group(1) if match else None
