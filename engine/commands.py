@@ -5,9 +5,14 @@ import requests
 import json
 import pywhatkit as kit
 import re
+import sqlite3
+import webbrowser
 
 from engine.constants import ASSISTANT_NAME, API_ENDPOINT
 from engine.speak import speak
+
+conn = sqlite3.connect("lisa.db")
+cursor = conn.cursor()
 
 @eel.expose
 def take_command():
@@ -31,7 +36,7 @@ def take_command():
         print("Sorry I didnt get that.")
         return ""
 
-    return query.lower()
+    return query
 
 @eel.expose
 def parse_all_commands():
@@ -45,17 +50,55 @@ def parse_all_commands():
         query_llama(query)
 
 def handle_open(query):
+    
     query = query.replace(ASSISTANT_NAME, "")
     query = query.replace("open", "")
-    query.lower() # not necesary i think
+    #query.lower() # not necesary i think
+    name = query.strip()
 
-    if query != "":
-        speak("Opening" + query)
-        os.system('start' + query) # using command prompt start command to open apps
-    else:
-        speak("Not found")
+    # if query != "":
+    #     speak("Opening" + query)
+    #     os.system('start' + query) # using command prompt start command to open apps
+    # else:
+    #     speak("Not found")
 
-    eel.ShowBlob()  
+    # eel.ShowBlob()
+    
+
+    if name != "":
+        try:
+            cursor.execute(
+                'SELECT path FROM sys_command WHERE name IN (?)', (name,)
+                )
+            results = cursor.fetchall()
+
+            # app on computer
+            if len(results) != 0:
+                print("Opening app from DB")
+                speak("Opening " + query)
+                os.startfile(results[0][0])
+            else:
+                # check website list
+                cursor.execute(
+                    'SELECT path from web_command WHERE name IN (?)', (name,)
+                )
+                results = cursor.fetchall()
+
+                if len(results) != 0:
+                    speak("Opening " + query)
+                    print("Opening website from DB")
+                    webbrowser.open(results[0][0])
+                else:
+                    speak("Opening " + query + " without database.")
+                    print("Opening app from cmd")
+                    try:
+                        os.system('start ' + query)
+                    except:
+                        speak("Not found")
+        except:
+            speak("Something went wrong")
+    eel.ShowBlob()
+
 
 def query_llama(query):
     query = query.replace(ASSISTANT_NAME, "")
