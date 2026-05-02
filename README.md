@@ -80,10 +80,6 @@ To change LLM behavior, edit **`query_llama`** in `engine/commands.py` (model na
 | `engine/features.py`, `engine/speak.py`, … | Audio/UI helpers |
 | `webUI/` | Static frontend |
 
-## GitHub metadata
-
-Pin-card **description** and **topics** are tracked in [`GITHUB_METADATA.md`](GITHUB_METADATA.md) for manual entry under repository Settings.
-
 ## License
 
 Apache License 2.0 — see [`LICENSE`](LICENSE).
